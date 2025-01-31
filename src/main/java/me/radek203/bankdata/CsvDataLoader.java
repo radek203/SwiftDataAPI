@@ -21,11 +21,6 @@ public class CsvDataLoader {
 
     private final BankRepository bankRepository;
 
-    private static String normalizeData(String data) {
-        data = data.trim();
-        return data.isEmpty() ? null : data.toUpperCase();
-    }
-
     @PostConstruct
     public void loadCsvData() {
         String csvFilePath = "swift_codes.csv";
@@ -38,14 +33,11 @@ public class CsvDataLoader {
 
             while ((nextRecord = csvReader.readNext()) != null) {
                 final Bank bank = new Bank(
-                        normalizeData(nextRecord[1]),
-                        normalizeData(nextRecord[0]),
-                        normalizeData(nextRecord[2]),
-                        normalizeData(nextRecord[3]),
-                        normalizeData(nextRecord[4]),
-                        normalizeData(nextRecord[5]),
-                        normalizeData(nextRecord[6]),
-                        normalizeData(nextRecord[7]),
+                        Bank.normalizeData(nextRecord[1]),
+                        Bank.normalizeData(nextRecord[0]),
+                        Bank.normalizeData(nextRecord[3]),
+                        Bank.normalizeData(nextRecord[4]),
+                        Bank.normalizeData(nextRecord[6]),
                         null,
                         null
                 );
@@ -75,7 +67,7 @@ public class CsvDataLoader {
 
     private void clearCsvFile(String filePath) {
         try (PrintWriter writer = new PrintWriter(filePath)) {
-            writer.print(""); // Overwrite file with empty content
+            writer.print("");
             System.out.println("CSV file cleared successfully.");
         } catch (IOException e) {
             System.err.println("Failed to clear CSV file: " + e.getMessage());

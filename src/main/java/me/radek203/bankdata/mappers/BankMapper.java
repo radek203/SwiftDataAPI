@@ -37,4 +37,16 @@ public class BankMapper {
         return new BanksByCodeDTO(countryCode, banks.getFirst().getCountry(), banks.stream().map(BankMapper::mapBankToBankReducedDTO).toList());
     }
 
+    public static Bank mapBankDTOToBank(BankDTO bankDTO) {
+        return new Bank(
+                Bank.normalizeData(bankDTO.getSwiftCode()),
+                Bank.normalizeData(bankDTO.getCountryISO2()),
+                Bank.normalizeData(bankDTO.getBankName()),
+                Bank.normalizeData(bankDTO.getAddress()),
+                Bank.normalizeData(bankDTO.getCountryName()),
+                null,
+                null
+        );
+    }
+
 }

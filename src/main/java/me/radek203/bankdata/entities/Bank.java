@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -19,18 +21,21 @@ public class Bank {
     @Id
     private String code;
     private String countryCode;
-    private String codeType;
     private String name;
     private String address;
-    private String town;
     private String country;
-    private String timezone;
 
     @ManyToOne
     @JoinColumn(name = "headquarter", referencedColumnName = "code")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Bank headquarter;
 
-    @OneToMany(mappedBy = "headquarter")
+    @OneToMany(mappedBy = "headquarter", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Bank> branches;
+
+    public static String normalizeData(String data) {
+        data = data.trim();
+        return data.isEmpty() ? null : data.toUpperCase();
+    }
 
 }

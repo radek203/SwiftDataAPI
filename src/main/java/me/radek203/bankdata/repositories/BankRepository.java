@@ -14,5 +14,8 @@ public interface BankRepository extends JpaRepository<Bank, String> {
     @Query("SELECT b FROM Bank b WHERE SUBSTRING(b.code, 1, 8) = :prefix AND b.code LIKE '%XXX'")
     List<Bank> findHeadquarterByCodePrefix(@Param("prefix") String prefix);
 
+    @Query("SELECT b FROM Bank b WHERE SUBSTRING(b.code, 1, 8) = :prefix AND b.code NOT LIKE '%XXX'")
+    List<Bank> findBranchesByCodePrefix(@Param("prefix") String prefix);
+
     List<Bank> findAllByCountryCode(String countryCode);
 }

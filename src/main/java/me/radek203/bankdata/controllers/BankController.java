@@ -6,10 +6,8 @@ import me.radek203.bankdata.entities.dto.BanksByCodeDTO;
 import me.radek203.bankdata.mappers.BankMapper;
 import me.radek203.bankdata.services.BankService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @AllArgsConstructor
 @RestController
@@ -26,6 +24,17 @@ public class BankController {
     @GetMapping("/country/{countryISO2code}")
     public ResponseEntity<BanksByCodeDTO> getBanksByCountry(@PathVariable("countryISO2code") String countryCode) {
         return ResponseEntity.ok(BankMapper.mapBanksToBanksByCodeDTO(countryCode, bankService.getBanksByCountryCode(countryCode)));
+    }
+
+    @PostMapping
+    public ResponseEntity<BankDTO> addBank(@Valid @RequestBody BankDTO bankDTO) {
+        return ResponseEntity.ok(BankMapper.mapBankToBankDTO(bankService.addBank(bankDTO)));
+    }
+
+    @DeleteMapping("/{swift-code}")
+    public ResponseEntity<Void> deleteBankByCode(@PathVariable("swift-code") String code) {
+        bankService.deleteBank(code);
+        return ResponseEntity.noContent().build();
     }
 
 }
