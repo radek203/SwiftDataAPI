@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "bank", indexes = @Index(name = "idx_country_code", columnList = "countryCode"))
 public class Bank {
 
     @Id

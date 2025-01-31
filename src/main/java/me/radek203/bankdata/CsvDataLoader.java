@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +66,19 @@ public class CsvDataLoader {
 
             System.out.println("CSV Data Successfully Loaded!");
 
+            clearCsvFile(csvFilePath);
+
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void clearCsvFile(String filePath) {
+        try (PrintWriter writer = new PrintWriter(filePath)) {
+            writer.print(""); // Overwrite file with empty content
+            System.out.println("CSV file cleared successfully.");
+        } catch (IOException e) {
+            System.err.println("Failed to clear CSV file: " + e.getMessage());
         }
     }
 
