@@ -16,21 +16,37 @@ public class BankController {
 
     private BankService bankService;
 
+    /**
+     * Get bank by swift code
+     * @return ResponseEntity with BankDTO object
+     */
     @GetMapping("/{swift-code}")
     public ResponseEntity<BankDTO> getBankByCode(@PathVariable("swift-code") String code) {
         return ResponseEntity.ok(BankMapper.mapBankToBankDTO(bankService.getBankByCode(code)));
     }
 
+    /**
+     * Get banks by country code
+     * @return ResponseEntity with BanksByCodeDTO object
+     */
     @GetMapping("/country/{countryISO2code}")
     public ResponseEntity<BanksByCodeDTO> getBanksByCountry(@PathVariable("countryISO2code") String countryCode) {
         return ResponseEntity.ok(BankMapper.mapBanksToBanksByCodeDTO(countryCode, bankService.getBanksByCountryCode(countryCode)));
     }
 
+    /**
+     * Add bank
+     * @return ResponseEntity with BankDTO object
+     */
     @PostMapping
     public ResponseEntity<BankDTO> addBank(@Valid @RequestBody BankDTO bankDTO) {
         return ResponseEntity.ok(BankMapper.mapBankToBankDTO(bankService.addBank(bankDTO)));
     }
 
+    /**
+     * Delete bank by swift code
+     * @return ResponseEntity with no content
+     */
     @DeleteMapping("/{swift-code}")
     public ResponseEntity<Void> deleteBankByCode(@PathVariable("swift-code") String code) {
         bankService.deleteBank(code);

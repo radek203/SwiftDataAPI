@@ -21,6 +21,9 @@ public class CsvDataLoader {
 
     private final BankRepository bankRepository;
 
+    /**
+     * Load data from CSV file to database on application startup
+     */
     @PostConstruct
     public void loadCsvData() {
         String csvFilePath = "swift_codes.csv";
@@ -65,6 +68,10 @@ public class CsvDataLoader {
         }
     }
 
+    /**
+     * Clear CSV file after data is loaded to database
+     * @param filePath path to CSV file
+     */
     private void clearCsvFile(String filePath) {
         try (PrintWriter writer = new PrintWriter(filePath)) {
             writer.print("");
