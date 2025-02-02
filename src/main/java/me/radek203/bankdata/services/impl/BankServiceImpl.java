@@ -3,6 +3,7 @@ package me.radek203.bankdata.services.impl;
 import lombok.AllArgsConstructor;
 import me.radek203.bankdata.entities.Bank;
 import me.radek203.bankdata.entities.dto.BankDTO;
+import me.radek203.bankdata.exception.ResourceAlreadyExistsException;
 import me.radek203.bankdata.exception.ResourceNotFoundException;
 import me.radek203.bankdata.mappers.BankMapper;
 import me.radek203.bankdata.repositories.BankRepository;
@@ -42,7 +43,7 @@ public class BankServiceImpl implements BankService {
 
         Optional<Bank> existed = bankRepository.findById(bank.getCode());
         if (existed.isPresent()) {
-            throw new ResourceNotFoundException("bank/existed", bank.getCode());
+            throw new ResourceAlreadyExistsException("bank/existed", bank.getCode());
         }
 
         Bank saved = bankRepository.save(bank);

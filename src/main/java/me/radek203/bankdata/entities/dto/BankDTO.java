@@ -2,7 +2,9 @@ package me.radek203.bankdata.entities.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,17 +14,18 @@ import java.util.List;
 @Getter
 public class BankDTO {
 
-    @NotNull(message = "address is required")
     private String address;
-    @NotNull(message = "bankName is required")
+    @NotBlank(message = "error/bankName-blank")
     private String bankName;
-    @NotNull(message = "countryISO2 is required")
+    @NotBlank(message = "error/countryISO2-blank")
+    @Size(min = 2, max = 2, message = "error/countryISO2-size")
     private String countryISO2;
-    @NotNull(message = "countryName is required")
+    @NotBlank(message = "error/countryName-blank")
     private String countryName;
-    @NotNull(message = "isHeadquarter is required")
-    private boolean isHeadquarter;
-    @NotNull(message = "swiftCode is required")
+    @NotNull(message = "error/isHeadquarter-null")
+    private Boolean isHeadquarter;
+    @NotBlank(message = "error/swiftCode-blank")
+    @Size(min = 11, max = 11, message = "error/swiftCode-size")
     private String swiftCode;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

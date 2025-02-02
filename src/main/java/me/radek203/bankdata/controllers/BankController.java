@@ -3,6 +3,7 @@ package me.radek203.bankdata.controllers;
 import lombok.AllArgsConstructor;
 import me.radek203.bankdata.entities.dto.BankDTO;
 import me.radek203.bankdata.entities.dto.BanksByCodeDTO;
+import me.radek203.bankdata.entities.dto.MessageDTO;
 import me.radek203.bankdata.mappers.BankMapper;
 import me.radek203.bankdata.services.BankService;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,9 @@ public class BankController {
      * @return ResponseEntity with BankDTO object
      */
     @PostMapping
-    public ResponseEntity<BankDTO> addBank(@Valid @RequestBody BankDTO bankDTO) {
-        return ResponseEntity.ok(BankMapper.mapBankToBankDTO(bankService.addBank(bankDTO)));
+    public ResponseEntity<MessageDTO> addBank(@Valid @RequestBody BankDTO bankDTO) {
+        bankService.addBank(bankDTO);
+        return ResponseEntity.ok(new MessageDTO("bank/created"));
     }
 
     /**
@@ -48,9 +50,9 @@ public class BankController {
      * @return ResponseEntity with no content
      */
     @DeleteMapping("/{swift-code}")
-    public ResponseEntity<Void> deleteBankByCode(@PathVariable("swift-code") String code) {
+    public ResponseEntity<MessageDTO> deleteBankByCode(@PathVariable("swift-code") String code) {
         bankService.deleteBank(code);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new MessageDTO("bank/deleted"));
     }
 
 }
