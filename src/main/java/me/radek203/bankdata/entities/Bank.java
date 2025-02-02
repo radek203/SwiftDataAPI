@@ -1,6 +1,7 @@
 package me.radek203.bankdata.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,16 @@ import java.util.List;
 public class Bank {
 
     @Id
+    @Column(length = 11, nullable = false)
+    @Size(min = 11, max = 11)
     private String code;
+    @Column(length = 2, nullable = false)
+    @Size(min = 2, max = 2)
     private String countryCode;
+    @Column(nullable = false)
     private String name;
     private String address;
+    @Column(nullable = false)
     private String country;
 
     @ManyToOne
@@ -34,6 +41,9 @@ public class Bank {
     private List<Bank> branches;
 
     public static String normalizeData(String data) {
+        if (data == null) {
+            return null;
+        }
         data = data.trim();
         return data.isEmpty() ? null : data.toUpperCase();
     }

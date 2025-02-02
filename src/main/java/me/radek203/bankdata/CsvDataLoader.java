@@ -6,6 +6,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import me.radek203.bankdata.entities.Bank;
 import me.radek203.bankdata.repositories.BankRepository;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -20,6 +22,7 @@ import java.util.List;
 public class CsvDataLoader {
 
     private final BankRepository bankRepository;
+    private final Environment environment;
 
     /**
      * Load data from CSV file to database on application startup
@@ -61,7 +64,9 @@ public class CsvDataLoader {
 
             System.out.println("CSV Data Successfully Loaded!");
 
-            clearCsvFile(csvFilePath);
+            if (!Arrays.asList(environment.getActiveProfiles()).contains("test")) {
+                clearCsvFile(csvFilePath);
+            }
 
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();

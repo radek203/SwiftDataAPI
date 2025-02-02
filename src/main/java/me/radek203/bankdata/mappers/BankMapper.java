@@ -5,6 +5,7 @@ import me.radek203.bankdata.entities.dto.BankDTO;
 import me.radek203.bankdata.entities.dto.BankReducedDTO;
 import me.radek203.bankdata.entities.dto.BanksByCodeDTO;
 
+import java.util.Collections;
 import java.util.List;
 
 public class BankMapper {
@@ -18,7 +19,7 @@ public class BankMapper {
                 bank.getCountry(),
                 isHeadquarter,
                 bank.getCode(),
-                isHeadquarter ? bank.getBranches().stream().map(BankMapper::mapBankToBankReducedDTO).toList() : null
+                isHeadquarter ? (bank.getBranches() != null ? bank.getBranches().stream().map(BankMapper::mapBankToBankReducedDTO).toList() : Collections.emptyList()) : null
         );
     }
 
@@ -34,6 +35,9 @@ public class BankMapper {
     }
 
     public static BanksByCodeDTO mapBanksToBanksByCodeDTO(String countryCode, List<Bank> banks) {
+        if (banks == null || banks.isEmpty()) {
+            return new BanksByCodeDTO(countryCode, null, Collections.emptyList());
+        }
         return new BanksByCodeDTO(countryCode, banks.getFirst().getCountry(), banks.stream().map(BankMapper::mapBankToBankReducedDTO).toList());
     }
 
