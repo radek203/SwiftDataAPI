@@ -29,7 +29,8 @@ public class CsvDataLoader {
      */
     @PostConstruct
     public void loadCsvData() {
-        String csvFilePath = "swift_codes.csv";
+        boolean testProfile = Arrays.asList(environment.getActiveProfiles()).contains("test");
+        String csvFilePath = testProfile ? "swift_codes.csv" : "/app/swift_codes.csv";
 
         try (CSVReader csvReader = new CSVReader(new FileReader(csvFilePath, StandardCharsets.UTF_8))) {
             String[] nextRecord;
@@ -64,7 +65,7 @@ public class CsvDataLoader {
 
             System.out.println("CSV Data Successfully Loaded!");
 
-            if (!Arrays.asList(environment.getActiveProfiles()).contains("test")) {
+            if (!testProfile) {
                 clearCsvFile(csvFilePath);
             }
 

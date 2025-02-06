@@ -1,0 +1,29 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: spring_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init-db-scripts:/docker-entrypoint-initdb.d
+    networks:
+      springboot-app-net:
+  springboot-app:
+    container_name: springboot-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      springboot-app-net:
+    restart: on-failure
+    depends_on:
+      - postgres
+
+networks:
+  springboot-app-net:
